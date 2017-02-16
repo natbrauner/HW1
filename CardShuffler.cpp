@@ -7,56 +7,68 @@
 #include <time.h>
 #include <iostream>
 #include <random>
+#include <fstream>
 
-#define DECK_COUNT 52
-#define DECK_NUM 1
+#define DECK_COUNT 52 //number of cards in the deck
+#define DECK_NUM 2 //number of decks
 
 using namespace std;
 int i;
 
-//make class cards
+//make class cards with property of a single number
 class card{
 public:
 		int cardNum; //0-51
 };
 
-//creat all the card 52
-
-
-void printcards(card& sCard) {
+//create all the card 52
+void printcards(card* sCard) {
 	//card type
-	if ((sCard.cardNum % 13) == 0) {
-		cout << "Ace";
-	}
-	else if((sCard.cardNum % 13) < 10) {
-		cout << (sCard.cardNum % 13) + 1;
-	}
-	else if((sCard.cardNum % 13) == 10) {
-		cout << "Jack";
-	}
-	else if((sCard.cardNum % 13) == 11) {
-		cout << "Queen";
-	}
-	else if((sCard.cardNum % 13) == 12) {
-		cout << "King";
-	}
+	for (int i = 0; i < DECK_COUNT*DECK_NUM; i++) {
+		if ((sCard[i].cardNum % 13) == 0) {
+			cout << "Ace";
+		}
+		else if ((sCard[i].cardNum % 13) < 10) {
+			cout << (sCard[i].cardNum % 13) + 1;
+		}
+		else if ((sCard[i].cardNum % 13) == 10) {
+			cout << "Jack";
+		}
+		else if ((sCard[i].cardNum % 13) == 11) {
+			cout << "Queen";
+		}
+		else if ((sCard[i].cardNum % 13) == 12) {
+			cout << "King";
+		}
 
-	//suite
-	if ((sCard.cardNum % 13) < 13) {
-		cout << " of Hearts" << endl;
-	}
-	else if((sCard.cardNum % 13) < 26) {
-		cout << " of Diamonds" << endl;
-	}
-	else if((sCard.cardNum % 13) < 39) {
-		cout << " of Clubs" << endl;
-	}
-	else if((sCard.cardNum % 13) < 52) {
-		cout << " of Spades" << endl;
+		//suite
+		if (sCard[i].cardNum < 13) {
+			cout << " of Hearts" << endl;
+		}
+		else if ((sCard[i].cardNum) < 26) {
+			cout << " of Diamonds" << endl;
+		}
+		else if ((sCard[i].cardNum) < 39) {
+			cout << " of Clubs" << endl;
+		}
+		else if ((sCard[i].cardNum) < 52) {
+			cout << " of Spades" << endl;
+		}
 	}
 }
 
-
+//this test handles any number of decks and handels test A and B for both cases
+int deckcheck_AB(card* testAandB) {
+	int j = 0;
+	for (i = 0; i < DECK_COUNT*DECK_NUM; i++) {
+		if (testAandB[0].cardNum == testAandB[i].cardNum) {
+			j++;
+			//cout << j << endl;
+		}
+	}
+	return j;
+	}
+//how do I run this in the main()?
 
 void shuffle(card* first, card* last) {
 	//shuffles the cards
@@ -71,13 +83,27 @@ void shuffle(card* first, card* last) {
 
 int main()
 {
-	card deck[DECK_COUNT*DECK_NUM];
-	card finaldeck[DECK_COUNT*DECK_NUM];
+	card deck[DECK_COUNT*DECK_NUM]; //initialized size deck
+	card finaldeck[DECK_COUNT*DECK_NUM]; //initialized final size deck
 
-	for (i = 0; i < DECK_COUNT; i++) {
+	//build the deck of numbers
+	for (i = 0; i < DECK_COUNT*DECK_NUM; i++) {
+		cout << i % 52 << endl;
 		deck[i].cardNum = i % 52;
 	}
-	shuffle(deck, finaldeck);
-    return 0;
+	for (i = 0; i < DECK_COUNT*DECK_NUM; i++) {
+		printcards(&(deck[i]));
+	}
+	
+	//shuffle(deck,finaldeck);
+	//printcards(finaldeck);
+	
+
+	//deckcheck_AB(finaldeck);
+
+	ofstream card;
+	card.open("finaldeck.txt");
+	
 }
 
+	//have to figure out how to output the text hopefully Bryant can help...
